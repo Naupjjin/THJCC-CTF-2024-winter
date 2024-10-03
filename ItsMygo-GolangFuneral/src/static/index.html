@@ -3,17 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>線上編譯器</title>
+    <title>It's MyGO!!!</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c859b;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .env-variable {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
         }
         .env-variable label {
             display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .env-variable input {
+            width: calc(100% - 12px);
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #2c859b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2c859b;
+        }
+        #code {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+            white-space: pre-wrap;
         }
     </style>
 </head>
@@ -42,10 +97,10 @@
             const newEnvVariable = document.createElement('div');
             newEnvVariable.className = 'env-variable';
             newEnvVariable.innerHTML = `
-                <label for="key">變數名稱:</label>
-                <input type="text" class="key" placeholder="輸入變數名稱">
-                <label for="value">變數值:</label>
-                <input type="text" class="value" placeholder="輸入變數值">
+                <label for="key">ENV name:</label>
+                <input type="text" class="key" placeholder="input your ENV name">
+                <label for="value">ENV Value:</label>
+                <input type="text" class="value" placeholder="input your ENV value">
             `;
             envContainer.appendChild(newEnvVariable);
         };
