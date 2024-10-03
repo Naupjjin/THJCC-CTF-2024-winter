@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>線上編譯器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .env-variable {
+            margin-bottom: 10px;
+        }
+        .env-variable label {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>MyGolang!!!!! Online Compiler</h1>
+    <h2>input your MyGo ENV</h2>
+    <div id="envVariables">
+        <div class="env-variable">
+            <label for="key">ENV name:</label>
+            <input type="text" class="key" placeholder="input your ENV name">
+            <label for="value">ENV Value:</label>
+            <input type="text" class="value" placeholder="input your ENV value">
+        </div>
+    </div>
+    <button id="addEnv">add MyGO!!!!!</button>
+    
+    <h2>Write anything code</h2>
+    <textarea id="code" rows="10" cols="50" placeholder="input youy MyGo!!!!!"></textarea>
+    
+    <br><br>
+    <button id="submit">なんで春日影やったの！？</button>
+    <div id="result"></div>
+    <script>
+        document.getElementById('addEnv').onclick = function() {
+            const envContainer = document.getElementById('envVariables');
+            const newEnvVariable = document.createElement('div');
+            newEnvVariable.className = 'env-variable';
+            newEnvVariable.innerHTML = `
+                <label for="key">變數名稱:</label>
+                <input type="text" class="key" placeholder="輸入變數名稱">
+                <label for="value">變數值:</label>
+                <input type="text" class="value" placeholder="輸入變數值">
+            `;
+            envContainer.appendChild(newEnvVariable);
+        };
+
+        document.getElementById('submit').onclick = async function() {
+            const envDict = {};
+            const keys = document.querySelectorAll('.key');
+            const values = document.querySelectorAll('.value');
+            
+            for (let i = 0; i < keys.length; i++) {
+                if (keys[i].value && values[i].value) {
+                    envDict[keys[i].value] = values[i].value;
+                }
+            }
+
+            const code = document.getElementById('code').value;
+
+            const response = await fetch('/compile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ env: envDict, code: code }),
+            });
+
+            const html = await response.text();
+            document.getElementById('result').innerHTML = html;
+        };
+    </script>
+</body>
+</html>
