@@ -98,13 +98,15 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
             cmd := exec.CommandContext(ctx, "go", "build", "-o", outputPath, codeFileName)
             cmd.Stdout = os.Stdout
             cmd.Stderr = os.Stderr
-        
+
             if err := cmd.Run(); err != nil {
                 if ctx.Err() == context.DeadlineExceeded {
                     fmt.Println("Error")
                 } else {
                     fmt.Println("Error", err)
                 }
+                
+                return
             }
         
             w.Header().Set("Content-Type", "text/html")
