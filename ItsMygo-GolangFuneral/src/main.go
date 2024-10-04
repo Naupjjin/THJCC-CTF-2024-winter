@@ -10,7 +10,8 @@ import (
     "net/http"
     "os"
     "os/exec"
-    
+    "context"
+    "time"
 )
 
 type CompileRequest struct {
@@ -71,45 +72,48 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
 
        
         go func() {
-
+      
+            ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+            defer cancel()
+        
             data, err := ioutil.ReadFile(envFileName)
             if err != nil {
                 fmt.Println("Error", err)
                 return
             }
-
+        
             var env map[string]string
             if err := json.Unmarshal(data, &env); err != nil {
                 fmt.Println("Error", err)
                 return
             }
-
+        
             for key, value := range env {
                 os.Setenv(key, value)
             }
-
+        
             outputPath := fmt.Sprintf("./userEXE/%s", fileHash)
-
-            cmd := exec.Command("go", "build", "-o", outputPath, codeFileName)
+        
+        
+            cmd := exec.CommandContext(ctx, "go", "build", "-o", outputPath, codeFileName)
             cmd.Stdout = os.Stdout
             cmd.Stderr = os.Stderr
-
+        
             if err := cmd.Run(); err != nil {
-                fmt.Println("Error", err)
-                return
+                if ctx.Err() == context.DeadlineExceeded {
+                    fmt.Println("Error")
+                } else {
+                    fmt.Println("Error", err)
+                }
             }
-
-            os.Remove(envFileName)
-            os.Remove(codeFileName)
-
-            os.Remove(outputPath) 
-            
+        
             w.Header().Set("Content-Type", "text/html")
             w.WriteHeader(http.StatusOK)
             responseHTML := fmt.Sprintf("<h1>MyGoGoGo!!!...success</h1>")
             w.Write([]byte(responseHTML))
+            
         }()
-
+        
     } else {
         http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
     }
