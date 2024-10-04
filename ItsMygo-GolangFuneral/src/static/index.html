@@ -92,7 +92,7 @@
     <br><br>
     <button id="submit">なんで春日影やったの！？</button>
     <button onclick="window.location.href='/itsmygo'">Danger!!!</button>
-    <div id="result"></div>
+
     <script>
         document.getElementById('addEnv').onclick = function() {
             const envContainer = document.getElementById('envVariables');
@@ -127,9 +127,12 @@
                 },
                 body: JSON.stringify({ env: envDict, code: code }),
             });
-
-            const html = await response.text();
-            document.getElementById('result').innerHTML = html;
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                alert("Error: " + errorMessage); 
+            } else {
+                alert("MyGo!!!!!"); 
+            }
         };
     </script>
 </body>

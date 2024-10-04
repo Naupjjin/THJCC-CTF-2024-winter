@@ -101,18 +101,14 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
 
             if err := cmd.Run(); err != nil {
                 if ctx.Err() == context.DeadlineExceeded {
-                    fmt.Println("Error")
+                    http.Error(w, "Error", http.StatusInternalServerError)
                 } else {
-                    fmt.Println("Error", err)
+                    http.Error(w, "Error", http.StatusInternalServerError)
                 }
-                
                 return
             }
-        
-            w.Header().Set("Content-Type", "text/html")
-            w.WriteHeader(http.StatusOK)
-            responseHTML := fmt.Sprintf("<h1>MyGoGoGo!!!...success</h1>")
-            w.Write([]byte(responseHTML))
+
+            fmt.Println("MyGo!!!!!")
             
         }()
         
