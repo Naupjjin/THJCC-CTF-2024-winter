@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyGo角色列表</title>
+    <title>MyGo!!!!!</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f8ff; /* 淡藍白色背景 */
+            background-color: #eef7ff; 
             margin: 0;
             padding: 20px;
-            text-align: center; /* 使所有內容居中 */
+            text-align: center; 
         }
         .header {
-            background-color: #000; /* 黑色背景 */
+            background-color: #000; 
             padding: 20px;
-            border-radius: 8px; /* 圓角 */
-            margin-bottom: 20px; /* 下方留白 */
+            border-radius: 8px; 
+            margin-bottom: 20px; 
         }
         .logo {
-            max-width: 300px; /* 設定logo的最大寬度 */
-            height: auto; /* 自動調整高度 */
+            max-width: 300px; 
+            height: auto; 
         }
         .mygo-List {
             display: flex;
@@ -38,7 +38,7 @@
             overflow: hidden;
             transition: transform 0.2s;
             width: 200px;
-            position: relative; /* 使介紹框相對於角色項目 */
+            position: relative; 
         }
         .mygo-List_Item:hover {
             transform: scale(1.05);
@@ -46,7 +46,7 @@
         .thumb {
             width: 100%;
             height: auto;
-            cursor: pointer; /* 顯示為可點擊 */
+            cursor: pointer; 
         }
         .thumb img {
             width: 100%;
@@ -68,31 +68,54 @@
             color: inherit;
         }
         .info-box {
-            display: none; /* 初始隱藏 */
+            display: none; 
             position: absolute;
             top: 0;
             left: 0;
             width: 90%;
-            background-color: rgba(0, 0, 0, 0.8); /* 半透明黑色 */
+            background-color: rgba(0, 0, 0, 0.8); 
             color: #fff;
             padding: 10px;
             border-radius: 8px;
-            z-index: 10; /* 確保在最上層 */
-            margin-top: 30%; /* 將框框移到下方 */
+            z-index: 10; 
+            margin-top: 30%; 
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .info-box.active {
-            display: block; /* 當為 active 時顯示 */
+            display: block; 
         }
+        .video-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 800px; 
+            width: 100%;
+            margin: 50px auto; 
+        }
+
+        iframe {
+            width: 100%;
+            height: 450px; 
+            border: none;
+        }
+
+        .video-title {
+            padding: 16px;
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+
     </style>
 </head>
 <body>
     <div class="header">
-        <h1><img class="logo" src="https://anime.bang-dream.com/mygo/wordpress/wp-content/themes/mygo_v1/assets/images/common/logo.svg" alt="MyGo Logo"/></h1>
+        <h1><img class="logo" src="../images/logo.svg" alt="MyGo Logo"/></h1>
         <ul class="mygo-List">
             <li class="mygo-List_Item tomori" onclick="toggleInfo(this)">
                 <div class="thumb">
-                    <img src="https://anime.bang-dream.com/mygo/wordpress/wp-content/themes/mygo_v1/assets/images/common/character/img_tomori.png" alt="高松 燈"/>
+                    <img src="../images/tomori.png" alt="高松 燈"/>
                 </div>
                 <div class="name">高松 燈<br><span class="part Lato">Vo.</span></div>
                 <div class="info-box">
@@ -101,7 +124,7 @@
             </li>
             <li class="mygo-List_Item anon" onclick="toggleInfo(this)">
                 <div class="thumb">
-                    <img src="https://anime.bang-dream.com/mygo/wordpress/wp-content/themes/mygo_v1/assets/images/common/character/img_anon.png" alt="千早 愛音"/>
+                    <img src="../images/anon.png" alt="千早 愛音"/>
                 </div>
                 <div class="name">千早 愛音<br><span class="part Lato">Gt.</span></div>
                 <div class="info-box">
@@ -110,7 +133,7 @@
             </li>
             <li class="mygo-List_Item rana" onclick="toggleInfo(this)">
                 <div class="thumb">
-                    <img src="https://anime.bang-dream.com/mygo/wordpress/wp-content/themes/mygo_v1/assets/images/common/character/img_rana.png" alt="要 楽奈"/>
+                    <img src="../images/rana.png" alt="要 楽奈"/>
                 </div>
                 <div class="name">要 楽奈<br><span class="part Lato">Gt.</span></div>
                 <div class="info-box">
@@ -119,7 +142,7 @@
             </li>
             <li class="mygo-List_Item soyo" onclick="toggleInfo(this)">
                 <div class="thumb">
-                    <img src="https://anime.bang-dream.com/mygo/wordpress/wp-content/themes/mygo_v1/assets/images/common/character/img_soyo.png" alt="長崎 そよ"/>
+                    <img src="../images/soyo.png" alt="長崎 そよ"/>
                 </div>
                 <div class="name">長崎 そよ<br><span class="part Lato">Ba.</span></div>
                 <div class="info-box">
@@ -128,7 +151,7 @@
             </li>
             <li class="mygo-List_Item taki" onclick="toggleInfo(this)">
                 <div class="thumb">
-                    <img src="https://anime.bang-dream.com/mygo/wordpress/wp-content/themes/mygo_v1/assets/images/common/character/img_taki.png" alt="椎名 立希"/>
+                    <img src="../images/taki.png" alt="椎名 立希"/>
                 </div>
                 <div class="name">椎名 立希<br><span class="part Lato">Dr.</span></div>
                 <div class="info-box">
@@ -136,6 +159,20 @@
                 </div>
             </li>
         </ul>
+    </div>
+    <div class="video-container" style="background-color: rgb(111, 201, 237)">
+        <div class="video-title">「壱雫空」（アニメ「BanG Dream! It's MyGO!!!!!」オープニング映像）</div>
+        <iframe src="https://www.youtube.com/embed/_CraJ8654Bg?si=P6AzgprnI0IbUNcC" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+
+    <div class="video-container" style="background-color: rgb(111, 201, 237)">
+        <div class="video-title">【Official Music Video】影色舞 / MyGO!!!!!【オリジナル楽曲】</div>
+        <iframe src="https://www.youtube.com/embed/iFIXi6zzCls?si=Qxxq5_1GHxMwsyZk" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    
+    <div class="video-container" style="background-color: rgb(111, 201, 237)">
+        <div class="video-title">詩超絆（アニメ「BanG Dream! It's MyGO!!!!!」#10 挿入歌）</div>
+        <iframe src="https://www.youtube.com/embed/QkG7tIGYgSw?si=xKx4YsOB7stpIjyy" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
 
     <script>

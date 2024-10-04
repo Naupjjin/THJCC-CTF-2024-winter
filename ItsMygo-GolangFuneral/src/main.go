@@ -10,6 +10,7 @@ import (
     "net/http"
     "os"
     "os/exec"
+    
 )
 
 type CompileRequest struct {
@@ -35,101 +36,85 @@ func ensureDir(dir string) error {
     return nil
 }
 
-func compileHandler(w http.ResponseWriter, r *http.Request) {
+func mygoooHandler(w http.ResponseWriter, r *http.Request) {
     if r.Method == http.MethodPost {
         var req CompileRequest
         if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-            w.Header().Set("Content-Type", "text/html; charset=utf-8")
-            w.WriteHeader(http.StatusOK)
-            responseHTML := fmt.Sprintf("<h1>ERROR request</h1>")
-            w.Write([]byte(responseHTML))
+            http.Error(w, "Error", http.StatusBadRequest)
             return
         }
 
         fileHash, err := generateRandomHash()
         if err != nil {
-            w.Header().Set("Content-Type", "text/html; charset=utf-8")
-            w.WriteHeader(http.StatusOK)
-            responseHTML := fmt.Sprintf("<h1>ERR generate filename</h1>")
-            w.Write([]byte(responseHTML))
-
+            http.Error(w, "Error", http.StatusInternalServerError)
             return
         }
 
         userFileDir := "./userFile"
         if err := ensureDir(userFileDir); err != nil {
-            w.Header().Set("Content-Type", "text/html; charset=utf-8")
-            w.WriteHeader(http.StatusOK)
-            responseHTML := fmt.Sprintf("<h1>ERR generate DIR</h1>")
-            w.Write([]byte(responseHTML))
+            http.Error(w, "Error", http.StatusInternalServerError)
             return
         }
 
         envFileName := fmt.Sprintf("%s/%s_env.json", userFileDir, fileHash)
         envData, _ := json.Marshal(req.Env)
         if err := ioutil.WriteFile(envFileName, envData, 0644); err != nil {
-            w.Header().Set("Content-Type", "text/html; charset=utf-8")
-            w.WriteHeader(http.StatusOK)
-            responseHTML := fmt.Sprintf("<h1>ERR write env</h1>")
-            w.Write([]byte(responseHTML))
+            http.Error(w, "Error", http.StatusInternalServerError)
             return
         }
 
         codeFileName := fmt.Sprintf("%s/%s.go", userFileDir, fileHash)
         if err := ioutil.WriteFile(codeFileName, []byte(req.Code), 0644); err != nil {
-            w.Header().Set("Content-Type", "text/html; charset=utf-8")
-            w.WriteHeader(http.StatusOK)
-            responseHTML := fmt.Sprintf("<h1>ERR write MyGolang</h1>")
-            w.Write([]byte(responseHTML))
-
-            return
-        }
-        
-        data, err := ioutil.ReadFile(envFileName)
-        if err != nil {
-            w.Header().Set("Content-Type", "text/html; charset=utf-8")
-            w.WriteHeader(http.StatusOK)
-            responseHTML := fmt.Sprintf("<h1>Error reading env.json</h1>")
-            w.Write([]byte(responseHTML))
-            return
-        }
-    
-        var env map[string]string
-        if err := json.Unmarshal(data, &env); err != nil {
-            w.Header().Set("Content-Type", "text/html; charset=utf-8")
-            w.WriteHeader(http.StatusOK)
-            responseHTML := fmt.Sprintf("<h1>Error parsing env.json</h1>")
-            w.Write([]byte(responseHTML))
-            return
-        }
-    
-        for key, value := range env {
-            os.Setenv(key, value)
-        }
-
-        outputPath := fmt.Sprintf("./userEXE/%s", fileHash)
-
-        cmd := exec.Command("go", "build", "-o", outputPath, codeFileName)
-        cmd.Stdout = os.Stdout
-        cmd.Stderr = os.Stderr
-    
-        if err := cmd.Run(); err != nil {
-            w.Header().Set("Content-Type", "text/html; charset=utf-8")
-            w.WriteHeader(http.StatusOK)
-            responseHTML := fmt.Sprintf("<h1>Error executing go build</h1>")
-            w.Write([]byte(responseHTML))
+            http.Error(w, "Error", http.StatusInternalServerError)
             return
         }
 
-        w.Header().Set("Content-Type", "text/html; charset=utf-8")
-        w.WriteHeader(http.StatusOK)
-        responseHTML := fmt.Sprintf("<h1>Success!</h1>")
-        w.Write([]byte(responseHTML))
+       
+        go func() {
+
+            data, err := ioutil.ReadFile(envFileName)
+            if err != nil {
+                fmt.Println("Error", err)
+                return
+            }
+
+            var env map[string]string
+            if err := json.Unmarshal(data, &env); err != nil {
+                fmt.Println("Error", err)
+                return
+            }
+
+            for key, value := range env {
+                os.Setenv(key, value)
+            }
+
+            outputPath := fmt.Sprintf("./userEXE/%s", fileHash)
+
+            cmd := exec.Command("go", "build", "-o", outputPath, codeFileName)
+            cmd.Stdout = os.Stdout
+            cmd.Stderr = os.Stderr
+
+            if err := cmd.Run(); err != nil {
+                fmt.Println("Error", err)
+                return
+            }
+
+            os.Remove(envFileName)
+            os.Remove(codeFileName)
+
+            os.Remove(outputPath) 
+            
+            w.Header().Set("Content-Type", "text/html")
+            w.WriteHeader(http.StatusOK)
+            responseHTML := fmt.Sprintf("<h1>MyGoGoGo!!!...success</h1>")
+            w.Write([]byte(responseHTML))
+        }()
 
     } else {
-        http.Error(w, "Request Method ERR", http.StatusMethodNotAllowed)
+        http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
     }
 }
+
 
 func mygoHandler(w http.ResponseWriter, r *http.Request) {
     http.ServeFile(w, r, "./static/mygo.html")
@@ -142,13 +127,13 @@ func charactersHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-    http.HandleFunc("/compile", compileHandler)
+    http.HandleFunc("/mygooo", mygoooHandler)
     http.HandleFunc("/itsmygo", mygoHandler) 
     http.HandleFunc("/characters", charactersHandler) 
 
     http.Handle("/", http.FileServer(http.Dir("./static")))
 
-    fmt.Println("Server started at http://127.0.0.1:8080")
+    fmt.Println("Server started om port http://localhost:8080")
     if err := http.ListenAndServe(":8080", nil); err != nil {
         fmt.Println("Error starting server:", err)
     }
