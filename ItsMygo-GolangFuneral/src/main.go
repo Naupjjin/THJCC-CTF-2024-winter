@@ -135,11 +135,16 @@ func mygoHandler(w http.ResponseWriter, r *http.Request) {
     http.ServeFile(w, r, "./static/mygo.html")
 }
 
+func charactersHandler(w http.ResponseWriter, r *http.Request) {
+    http.ServeFile(w, r, "./static/character.html")
+}
+
 
 func main() {
 
     http.HandleFunc("/compile", compileHandler)
     http.HandleFunc("/itsmygo", mygoHandler) 
+    http.HandleFunc("/characters", charactersHandler) 
 
     http.Handle("/", http.FileServer(http.Dir("./static")))
 
