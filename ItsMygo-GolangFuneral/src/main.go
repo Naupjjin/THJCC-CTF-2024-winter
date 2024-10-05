@@ -6,6 +6,7 @@ import (
     "encoding/base64"
     "encoding/json"
     "fmt"
+    "strings"
     "io/ioutil"
     "net/http"
     "os"
@@ -35,6 +36,24 @@ func ensureDir(dir string) error {
         return os.MkdirAll(dir, os.ModePerm)
     }
     return nil
+}
+
+func isCRYCHIC(VAL string, CryChic []string) bool {
+    for _, BWC := range CryChic {
+        if strings.Contains(VAL, BWC) { 
+            return true
+        }
+    }
+    return false
+}
+
+
+func base64decode(encoded string) string {
+    data, err := base64.StdEncoding.DecodeString(encoded)
+    if err != nil {
+        panic(err)
+    }
+    return string(data)
 }
 
 func mygoooHandler(w http.ResponseWriter, r *http.Request) {
@@ -88,7 +107,21 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
                 return
             }
         
+
             for key, value := range env {
+                
+                CRYCHIC := []string{
+                    base64decode("Q1JZQ0hJQw==") ,   
+                }
+                
+            
+                if isCRYCHIC(value, CRYCHIC) {
+                    http.Error(w, "Error", http.StatusInternalServerError)
+                    fmt.Println("CRYCHIC DETECT!!!")
+                    return
+                }
+                
+
                 os.Setenv(key, value)
             }
         
@@ -97,12 +130,15 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
             cmd := exec.CommandContext(ctx, "go", "build", "-o", outputPath, codeFileName)
             cmd.Stdout = os.Stdout
             cmd.Stderr = os.Stderr
+            
 
             if err := cmd.Run(); err != nil {
                 if ctx.Err() == context.DeadlineExceeded {
                     http.Error(w, "Error", http.StatusInternalServerError)
+                    
                 } else {
                     http.Error(w, "Error", http.StatusInternalServerError)
+
                 }
                 return
             }
