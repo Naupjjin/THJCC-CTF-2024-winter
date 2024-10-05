@@ -94,7 +94,6 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
         
             outputPath := fmt.Sprintf("./userEXE/%s", fileHash)
         
-        
             cmd := exec.CommandContext(ctx, "go", "build", "-o", outputPath, codeFileName)
             cmd.Stdout = os.Stdout
             cmd.Stderr = os.Stderr
@@ -113,7 +112,7 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
         }()
         
     } else {
-        http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+        http.ServeFile(w, r, "./static/mygolang.html")
     }
 }
 
@@ -122,18 +121,18 @@ func mygoHandler(w http.ResponseWriter, r *http.Request) {
     http.ServeFile(w, r, "./static/mygo.html")
 }
 
-func charactersHandler(w http.ResponseWriter, r *http.Request) {
-    http.ServeFile(w, r, "./static/character.html")
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+    http.ServeFile(w, r, "./static/index.html")
 }
-
 
 func main() {
 
-    http.HandleFunc("/mygooo", mygoooHandler)
+    http.HandleFunc("/mygolang", mygoooHandler)
     http.HandleFunc("/itsmygo", mygoHandler) 
-    http.HandleFunc("/characters", charactersHandler) 
+    http.HandleFunc("/", indexHandler) 
 
-    http.Handle("/", http.FileServer(http.Dir("./static")))
+    fs := http.FileServer(http.Dir("./static"))
+    http.Handle("/static/", http.StripPrefix("/static/", fs))
 
     fmt.Println("Server started om port http://localhost:8080")
     if err := http.ListenAndServe(":8080", nil); err != nil {

@@ -3,137 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>It's MyGO!!!</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        h1, h2 {
-            text-align: center;
-            color: #2c859b;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .env-variable {
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #fafafa;
-        }
-        .env-variable label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .env-variable input {
-            width: calc(100% - 12px);
-            padding: 5px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #2c859b;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #2c859b;
-        }
-        #code {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            resize: none;
-        }
-        #result {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #fafafa;
-            white-space: pre-wrap;
-        }
-    </style>
+    <title>MyGo!!!!!</title>
+
+    <link rel="stylesheet" href="/static/css/indexstyle.css">
 </head>
 <body>
-    <h1>It's Mygo!!!!! 🎤🎸🎸🥁🎸 Golang's Funeral 🎹</h1>
-    <h2>input your MyGo characters!!!!!</h2>
-    <div id="envVariables">
-        <div class="env-variable">
-            <label for="key">Characters name:</label>
-            <input type="text" class="key" placeholder="input your Characters name">
-            <label for="value">Characters Value:</label>
-            <input type="text" class="value" placeholder="input your Characters value">
-        </div>
+        
+    <div id="sidebar" class="sidebar">
+        <span class="close-btn" onclick="closeSidebar()">&times;</span>
+        <a href="/">HOME</a>
+        <a href="/mygolang">MyGolang</a>
+        <a href="/itsmygo">special?</a>
     </div>
-    <button id="addEnv">MyGO!!!!!</button>
-    <button onclick="window.location.href='/characters'">MyGo's characters</button>
 
-    <h2>Write anything MyGo!!!!!</h2>
-    <textarea id="code" rows="10" cols="50" placeholder="input your MyGo!!!!!"></textarea>
+    <div class="header">
+        <button class="menu-btn" onclick="openSidebar()">MENU</button>
+        <h1><img class="logo" src="/static/images/logo.svg" alt="MyGo Logo"/></h1>
+        <ul class="mygo-List">
+            <li class="mygo-List_Item tomori" onclick="toggleInfo(this)">
+                <div class="thumb">
+                    <img src="/static/images/tomori.png" alt="高松 燈"/>
+                </div>
+                <div class="name">高松 燈<br><span class="part Lato">Vo.</span></div>
+                <div class="info-box">
+                    <p>羽丘女子学園の高校1年生。物事の感じ方が周りとズレている、「羽丘の不思議ちゃん」。気に入ったものを集めるのが好きで、道に落ちた石や葉っぱをよく拾っている。</p>
+                </div>
+            </li>
+            <li class="mygo-List_Item anon" onclick="toggleInfo(this)">
+                <div class="thumb">
+                    <img src="/static/images/anon.png" alt="千早 愛音"/>
+                </div>
+                <div class="name">千早 愛音<br><span class="part Lato">Gt.</span></div>
+                <div class="info-box">
+                    <p>羽丘女子学園の高校1年生。成績優秀でコミュ力と行動力があり、中学時代はクラスの人気者で、生徒会長も務めていた。ミーハーな性格で流行っているものに手を出しがち。</p>
+                </div>
+            </li>
+            <li class="mygo-List_Item rana" onclick="toggleInfo(this)">
+                <div class="thumb">
+                    <img src="/static/images/rana.png" alt="要 楽奈"/>
+                </div>
+                <div class="name">要 楽奈<br><span class="part Lato">Gt.</span></div>
+                <div class="info-box">
+                    <p>花咲川女子学園の中学3年生。ライブハウス『RiNG』に神出鬼没に現れるエキセントリックガール。ギターの実力はかなりのもの。好きなものは好き、嫌いなものは嫌いとはっきりしている。抹茶が好き。</p>
+                </div>
+            </li>
+            <li class="mygo-List_Item soyo" onclick="toggleInfo(this)">
+                <div class="thumb">
+                    <img src="/static/images/soyo.png" alt="長崎 そよ"/>
+                </div>
+                <div class="name">長崎 そよ<br><span class="part Lato">Ba.</span></div>
+                <div class="info-box">
+                    <p>月ノ森女子学園の高校1年生。吹奏楽部でコントラバスを担当している。いつも穏やかな雰囲気のお姉さん的存在。誰にでも優しく、周りから頼られることが多い。考え事をしながら指先をいじる癖がある。</p>
+                </div>
+            </li>
+            <li class="mygo-List_Item taki" onclick="toggleInfo(this)">
+                <div class="thumb">
+                    <img src="/static/images/taki.png" alt="椎名 立希"/>
+                </div>
+                <div class="name">椎名 立希<br><span class="part Lato">Dr.</span></div>
+                <div class="info-box">
+                    <p>花咲川女子学園の高校1年生。ひとりでいることが好きな一匹狼。ライブハウス『RiNG』のスタッフとしてアルバイトをしているが、接客は苦手。燈に甘い。4つ上の姉がいる。</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="video-container" style="background-color: rgb(111, 201, 237)">
+        <div class="video-title">「壱雫空」（アニメ「BanG Dream! It's MyGO!!!!!」オープニング映像）</div>
+        <iframe src="https://www.youtube.com/embed/_CraJ8654Bg?si=P6AzgprnI0IbUNcC" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+
+    <div class="video-container" style="background-color: rgb(111, 201, 237)">
+        <div class="video-title">【Official Music Video】影色舞 / MyGO!!!!!【オリジナル楽曲】</div>
+        <iframe src="https://www.youtube.com/embed/iFIXi6zzCls?si=Qxxq5_1GHxMwsyZk" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
     
-    <br><br>
-    <button id="submit">なんで春日影やったの！？</button>
-    <button onclick="window.location.href='/itsmygo'">Danger!!!</button>
+    <div class="video-container" style="background-color: rgb(111, 201, 237)">
+        <div class="video-title">詩超絆（アニメ「BanG Dream! It's MyGO!!!!!」#10 挿入歌）</div>
+        <iframe src="https://www.youtube.com/embed/QkG7tIGYgSw?si=xKx4YsOB7stpIjyy" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
 
-    <script>
-        document.getElementById('addEnv').onclick = function() {
-            const envContainer = document.getElementById('envVariables');
-            const newEnvVariable = document.createElement('div');
-            newEnvVariable.className = 'env-variable';
-            newEnvVariable.innerHTML = `
-                <label for="key">ENV name:</label>
-                <input type="text" class="key" placeholder="input your ENV name">
-                <label for="value">ENV Value:</label>
-                <input type="text" class="value" placeholder="input your ENV value">
-            `;
-            envContainer.appendChild(newEnvVariable);
-        };
-
-        document.getElementById('submit').onclick = async function() {
-            const envDict = {};
-            const keys = document.querySelectorAll('.key');
-            const values = document.querySelectorAll('.value');
-            
-            for (let i = 0; i < keys.length; i++) {
-                if (keys[i].value && values[i].value) {
-                    envDict[keys[i].value] = values[i].value;
-                }
-            }
-
-            const code = document.getElementById('code').value;
-
-            const response = await fetch('/mygooo', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ env: envDict, code: code }),
-            });
-            if (!response.ok) {
-                const errorMessage = await response.text();
-                alert("Error: " + errorMessage); 
-            } else {
-                alert("MyGo!!!!!"); 
-            }
-        };
-    </script>
+    <script src="/static/js/index.js"></script>
 </body>
 </html>
