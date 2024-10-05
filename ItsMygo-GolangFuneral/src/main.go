@@ -6,7 +6,6 @@ import (
     "encoding/base64"
     "encoding/json"
     "fmt"
-    "strings"
     "io/ioutil"
     "net/http"
     "os"
@@ -38,40 +37,26 @@ func ensureDir(dir string) error {
     return nil
 }
 
-func isCRYCHIC(VAL string, CryChic []string) bool {
-    for _, BWC := range CryChic {
-        if strings.Contains(VAL, BWC) { 
-            return true
-        }
-    }
-    return false
-}
-
-
-func base64decode(encoded string) string {
-    data, err := base64.StdEncoding.DecodeString(encoded)
-    if err != nil {
-        panic(err)
-    }
-    return string(data)
-}
 
 func mygoooHandler(w http.ResponseWriter, r *http.Request) {
     if r.Method == http.MethodPost {
         var req CompileRequest
         if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+            fmt.Println("Error", err)
             http.Error(w, "Error", http.StatusBadRequest)
             return
         }
 
         fileHash, err := generateRandomHash()
         if err != nil {
+            fmt.Println("Error", err)
             http.Error(w, "Error", http.StatusInternalServerError)
             return
         }
 
         userFileDir := "./userFile"
         if err := ensureDir(userFileDir); err != nil {
+            fmt.Println("Error", err)
             http.Error(w, "Error", http.StatusInternalServerError)
             return
         }
@@ -79,12 +64,14 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
         envFileName := fmt.Sprintf("%s/%s_env.json", userFileDir, fileHash)
         envData, _ := json.Marshal(req.Env)
         if err := ioutil.WriteFile(envFileName, envData, 0644); err != nil {
+            fmt.Println("Error", err)
             http.Error(w, "Error", http.StatusInternalServerError)
             return
         }
 
         codeFileName := fmt.Sprintf("%s/%s.go", userFileDir, fileHash)
         if err := ioutil.WriteFile(codeFileName, []byte(req.Code), 0644); err != nil {
+            fmt.Println("Error", err)
             http.Error(w, "Error", http.StatusInternalServerError)
             return
         }
@@ -109,19 +96,6 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
         
 
             for key, value := range env {
-                
-                CRYCHIC := []string{
-                    base64decode("Q1JZQ0hJQw==") ,   
-                }
-                
-            
-                if isCRYCHIC(value, CRYCHIC) {
-                    http.Error(w, "Error", http.StatusInternalServerError)
-                    fmt.Println("CRYCHIC DETECT!!!")
-                    return
-                }
-                
-
                 os.Setenv(key, value)
             }
         
