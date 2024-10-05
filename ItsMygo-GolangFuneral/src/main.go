@@ -108,9 +108,11 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
 
             if err := cmd.Run(); err != nil {
                 if ctx.Err() == context.DeadlineExceeded {
+                    fmt.Println("Error", err)
                     http.Error(w, "Error", http.StatusInternalServerError)
                     
                 } else {
+                    fmt.Println("Error", err)
                     http.Error(w, "Error", http.StatusInternalServerError)
 
                 }
