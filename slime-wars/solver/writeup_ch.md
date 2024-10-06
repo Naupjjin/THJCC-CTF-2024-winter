@@ -70,6 +70,7 @@ int main() {
 我們只有flag的位置而已
 					   
 ![stack_smashing](img/stack_smashing.png)
+
 這邊觀察一件事，當我們在glibc 2.23觸發stack smashing detect的時候，他會噴出./demo，也就是你ELF的位置			
 					   
 他是去哪裡找到ELF的路徑的					   
