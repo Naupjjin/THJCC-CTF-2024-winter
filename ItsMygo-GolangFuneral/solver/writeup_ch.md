@@ -655,4 +655,4 @@ cgo: cannot parse $WORK/b041/_cgo_.o as ELF, Mach-O, PE or XCOFF
 
 你是優秀的mygo工讀生
 
-> Flag: THJCC{MyGo!!!https://www.youtube.com/channel/UC80p_16pSSHA8YmtCVdX51w_OuO_ItsMygo!!!!!🎤🎸🎸🥁🎸GolangsFuneral🎹}
+> Flag: THJCC{MyGo!!!\!!https://www.youtube.com/channel/UC80p_16pSSHA8YmtCVdX51w_OuO_ItsMygo!!!!!🎤🎸🎸🥁🎸GolangsFuneral🎹}
