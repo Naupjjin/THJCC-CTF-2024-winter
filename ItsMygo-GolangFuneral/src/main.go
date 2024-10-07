@@ -6,6 +6,7 @@ import (
     "encoding/base64"
     "encoding/json"
     "fmt"
+    "strings"
     "io/ioutil"
     "net/http"
     "os"
@@ -37,6 +38,14 @@ func ensureDir(dir string) error {
     return nil
 }
 
+func isDanger(value string, blacklist []string) bool {
+	for _, blacklistedWord := range blacklist {
+		if strings.Contains(value, blacklistedWord) {
+			return true
+		}
+	}
+	return false
+}
 
 func mygoooHandler(w http.ResponseWriter, r *http.Request) {
     if r.Method == http.MethodPost {
@@ -85,17 +94,27 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
             data, err := ioutil.ReadFile(envFileName)
             if err != nil {
                 fmt.Println("Error", err)
+                os.Remove(envFileName)
+                os.Remove(codeFileName)
                 return
             }
         
             var env map[string]string
             if err := json.Unmarshal(data, &env); err != nil {
                 fmt.Println("Error", err)
+                os.Remove(envFileName)
+                os.Remove(codeFileName)
                 return
             }
         
-
+            blacklist := []string{"id", "curl", "whoami", "cat", "ls", "cd", "grep"}
             for key, value := range env {
+                if isDanger(value, blacklist) {
+                    fmt.Println("ERROR!")
+                    os.Remove(envFileName)
+                    os.Remove(codeFileName)
+                    return
+                }
                 os.Setenv(key, value)
             }
         
@@ -116,10 +135,16 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
                     http.Error(w, "Error", http.StatusInternalServerError)
 
                 }
+                os.Remove(envFileName)
+                os.Remove(codeFileName)
+                os.Remove(outputPath)
                 return
             }
 
             fmt.Println("MyGo!!!!!")
+            os.Remove(envFileName)
+            os.Remove(codeFileName)
+            os.Remove(outputPath)
             
         }()
         
