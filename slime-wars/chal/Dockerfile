@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:16.04
 
 RUN apt-get update && \
     DEBAIN_FRONTEND=noninteractive apt-get install -qy gcc gcc-multilib xinetd
