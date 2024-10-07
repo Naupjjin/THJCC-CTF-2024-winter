@@ -651,7 +651,7 @@ naup
 cgo: cannot parse $WORK/b041/_cgo_.o as ELF, Mach-O, PE or XCOFF
 ```
 	
-成功RCE，接下來就用curl 或 wget的方式將結果送到webhook就可以解了!
+成功RCE，接下來就用curl 或 wget的方式將結果送到webhook就可以解了!(黑名單所有都可以透過在中間塞一個${x}來繞過)
 其實 golang官網有提到CC這個環境變數相關資料
 ![golang-official-cc](img/go_official.png)
 
