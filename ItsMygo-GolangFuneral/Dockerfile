@@ -16,6 +16,10 @@ RUN adduser -D -h /home/ctfuser -s /bin/bash ctfuser
 RUN chown -R ctfuser:ctfuser /app && \
     chmod -R 550 /app
 
+RUN chmod 770 /app/userEXE && \
+    chmod 770 /app/userFile && \
+    chown -R ctfuser:ctfuser /app/userEXE /app/userFile
+
 USER root
 
 RUN go build -o server .
