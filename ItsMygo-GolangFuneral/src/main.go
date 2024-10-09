@@ -107,7 +107,7 @@ func mygoooHandler(w http.ResponseWriter, r *http.Request) {
                 return
             }
         
-            blacklist := []string{"id", "curl", "whoami", "cat", "ls", "cd", "grep"}
+            blacklist := []string{"id", "curl", "whoami", "cat", "ls", "cd", "grep", ">", "echo", "bash", "&"}
             for key, value := range env {
                 if isDanger(value, blacklist) {
                     fmt.Println("ERROR!")
