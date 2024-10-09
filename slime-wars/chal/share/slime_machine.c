@@ -41,8 +41,8 @@ int main() {
         exit(0);
     }
 
-    place = malloc(0x40);
-    read(slime_core, place, 0x40);
+    place = malloc(0x100);
+    read(slime_core, place, 0x100);
     printf("Here is your slime core address: %p\n", place);
     printf("Do you accept the slime's embrace?");
     gets(your_input);
