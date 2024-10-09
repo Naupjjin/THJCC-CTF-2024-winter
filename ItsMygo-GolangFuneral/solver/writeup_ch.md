@@ -1,7 +1,7 @@
 # It's Mygo!!!\!!🎤🎸🎸🥁🎸 Golang's Funeral 🎹
 > Author: 堇姬Naup
 
-tag: `web`、`reverse`、`golang`、`MyGo!!!!!`
+tag: `web`、`reverse`、`pwn`、`golang`、`MyGo!!!!!`
 
 發現的一個golang trick，順便讓各位玩看看golang逆向
 ## IDA分析
