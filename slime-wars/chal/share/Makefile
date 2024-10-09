@@ -1,2 +1,2 @@
 all:
-	- gcc chal.c -o chal -fstack-protector -z noexecstack -fPIE -pie -Wl,-z,relro,-z,now
+	- gcc slime_war.c -o chal -fstack-protector -z noexecstack -fPIE -pie -Wl,-z,relro,-z,now
