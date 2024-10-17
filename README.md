@@ -3,4 +3,4 @@
 |challenge|catagory|difficult|
 |---------|--------|---------|
 |It's Mygo!!!\!!🎤🎸🎸🥁🎸 Golang's Funeral 🎹|web、reverse、pwn|insane|
-|⚔️⚔️slime's War⚔️⚔️|pwn|insane|
+|🎭🎭🎭🎭🎭Welcome to AVE Mujica🎶|pwn|insane|
