@@ -14,7 +14,7 @@ void print_Sakiko() {
         printf("CRYCHIC Funeral\n");
         return 1;
     }
-
+    
     while (fgets(line, sizeof(line), file)) {
         printf("%s", line);
     }
@@ -29,8 +29,11 @@ int main() {
     print_Sakiko();
     
     AVEmujica = open("flag", O_RDONLY);
+    printf("=====================================================\n");
+    printf("…ようこそ。Ave Mujica の世界へ\n");
+    printf("=====================================================\n");
     if (AVEmujica < 0) {
-        printf("…ようこそ。Ave Mujica の世界へ\n");
+        printf("CRYCHIC Funeral\n");
         exit(0);
     }
 
