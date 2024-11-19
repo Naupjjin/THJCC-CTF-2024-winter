@@ -10,32 +10,12 @@ tag: `pwn`
 #include <unistd.h>
 #include <fcntl.h>
 
-void print_Sakiko() {
-    FILE *file;
-    char line[0x100];  
-
-
-    file = fopen("ave_mujica.txt", "r");
-
-    if (file == NULL) {
-        printf("CRYCHIC Funeral\n");
-        return 1;
-    }
-    
-    while (fgets(line, sizeof(line), file)) {
-        printf("%s", line);
-    }
-    fclose(file);
-}
-
 int main() {
     void *stage;
     int AVEmujica;
     char your_input[16];
 
-    print_Sakiko();
-    
-    AVEmujica = open("flag", O_RDONLY);
+    AVEmujica = open("./flag", O_RDONLY);
     printf("=====================================================\n");
     printf("…ようこそ。Ave Mujica の世界へ\n");
     printf("=====================================================\n");
