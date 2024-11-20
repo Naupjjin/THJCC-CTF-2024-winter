@@ -4,6 +4,10 @@
 #include <fcntl.h>
 
 int main() {
+
+    setvbuf(stdin, 0, _IONBF, 0);
+    setvbuf(stdout, 0, _IONBF, 0);
+
     void *stage;
     int AVEmujica;
     char your_input[16];
