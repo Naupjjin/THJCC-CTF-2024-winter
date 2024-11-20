@@ -8,7 +8,7 @@ int main() {
     int AVEmujica;
     char your_input[16];
 
-    AVEmujica = open("./flag", O_RDONLY);
+    AVEmujica = open("/home/chal/flag", O_RDONLY);
     printf("=====================================================\n");
     printf("…ようこそ。Ave Mujica の世界へ\n");
     printf("=====================================================\n");
