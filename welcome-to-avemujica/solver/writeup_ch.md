@@ -86,6 +86,7 @@ __fortify_fail (const char *msg)
 這是一個在stack上的一個pointer，這裡會印出他指向位置上的值					   
 結合buffer overflow，如果我們能一直往下蓋，把該pointer蓋成flag的位置，就可以透過stack smashing去leak出flag了
 
+PS: 如果認真觀察會發現一件事，原本應該是不會輸出error message給你，但是我把`exec 2>/dev/null`給拔掉了，所以說錯誤訊息會回顯，因此可以用此方法。
 
 ## script
 ```python
