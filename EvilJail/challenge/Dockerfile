@@ -15,5 +15,5 @@ COPY ./src /app/
 
 USER restricted_user
 
-EXPOSE 40001
-ENTRYPOINT ["socat", "tcp-listen:40001,fork", "EXEC:'/opt/pyjail1/bin/python server.py'"]
+EXPOSE 20001
+ENTRYPOINT ["socat", "tcp-listen:20001,fork", "EXEC:'/opt/pyjail1/bin/python server.py'"]
