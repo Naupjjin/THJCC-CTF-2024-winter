@@ -40,7 +40,7 @@ int main() {
 
 ```
 
-他malloc一塊chunk並存放slime core(flag)
+他malloc一塊chunk並存放AVEmujica(flag)
 並且使用者可以輸入一些東西，這裡存在無長度限制的buffer overflow					  
 					 
 ## 攻擊					   
