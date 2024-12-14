@@ -714,6 +714,7 @@ cgo: cannot parse $WORK/b041/_cgo_.o as ELF, Mach-O, PE or XCOFF
 ![golang-official-cc](img/go_official.png)
 
 ## exploit
+另外像是輸出時被換行之類的或是emoji之類的問題就用 `base64 + tr -d` 解決
 ```py
 import requests
 import sys
