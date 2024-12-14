@@ -752,7 +752,7 @@ def exploit():
     response = requests.post(url, headers=headers, json=data)
 
     print("Status Code:", response.status_code)
-    print("Response Body:", response.text)
+    print("[Success!!!] check your host")
 
 exploit()
 ```
