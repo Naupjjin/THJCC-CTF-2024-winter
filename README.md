@@ -1,4 +1,5 @@
 # THJCC CTF 2024 2th - challenge
+> Author: 堇姬Naup
 
 |challenge|catagory|difficult|
 |---------|--------|---------|
