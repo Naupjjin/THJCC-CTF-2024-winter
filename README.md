@@ -1,4 +1,4 @@
-# THJCC CTF 2024 2th - challenge
+# THJCC CTF 2024 Winter - challenge
 > Author: 堇姬Naup
 
 |challenge|catagory|difficult|
